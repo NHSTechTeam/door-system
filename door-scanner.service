@@ -1,0 +1,16 @@
+[Unit]
+Description=NHSTechTeamDoorScanner-Service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+ExecStart=/opt/NHSTechTeam/door-system/door_scanner.py
+WorkingDirectory=/opt/NHSTechTeam/door-system
+Restart=always
+RestartSec=2
+User=techteam
+Environment="PYTHONUNBUFFERED=1"
+
+[Install]
+WantedBy=multi-user.target
