@@ -1,4 +1,4 @@
-$dir = "/opt/NHSTechTeam/door-system"
+dir = "/opt/NHSTechTeam/door-system"
 
 apt update && apt install -y git python
 git clone https://github.com/NHSTechTeam/door-system.git $dir
