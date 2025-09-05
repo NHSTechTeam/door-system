@@ -9,11 +9,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 MQTT_BROKER = os.getenv("MQTT_BROKER")
-MQTT_PORT =  os.getenv("MQTT_PORT")
+MQTT_PORT =  os.getenv("MQTT_PORT", 1883)
 MQTT_USERNAME = os.getenv("MQTT_USERNAME")
 MQTT_PASSWORD = os.getenv("MQTT_PASSWORD")
 MQTT_TOPIC_UNLOCK = "door/unlock"
 MQTT_TOPIC_SCAN = "door/scan"
+DEV_MODE = False
 
 
 def find_keyboard():
@@ -21,7 +22,9 @@ def find_keyboard():
     for dev in devices:
         if "Barcode" in dev.name.lower() or "Keyboard" in dev.name.lower():
             return dev
-    raise RuntimeError("No barcode scanner found")
+    DEV_MODE = True
+    print("Keyboard not found, entering dev mode.")
+    return None
 
 
 def unlock_door():
@@ -42,8 +45,7 @@ def read_scanner(device, client):
             if key.keystate == 1:  # key down
                 if key.keycode == "KEY_ENTER":
                     if input_text:
-                        payload = {"type": "barcode", "code": input_text}
-                        client.publish(MQTT_TOPIC_SCAN, json.dumps(payload))
+                        send_payload(input_text, client)
                         input_text = ""
                 else:
                     code = key.keycode.replace("KEY_", "")
@@ -51,11 +53,13 @@ def read_scanner(device, client):
                         input_text += code
         
 
+def send_payload(inputtext, client):
+    payload = {"type": "barcode", "code": input_text}
+    client.publish(MQTT_TOPIC_SCAN, json.dumps(payload))
 
 def on_message(client, userdata, msg):
     if msg.topic == MQTT_TOPIC_UNLOCK:
         unlock_door()
-
 
 client = mqtt.Client()
 client.on_message = on_message
@@ -64,4 +68,11 @@ client.connect(MQTT_BROKER, MQTT_PORT, 60)
 client.subscribe(MQTT_TOPIC_UNLOCK)
 client.loop_start()
 
-read_scanner(find_keyboard(), client)
+if not DEV_MODE:
+    read_scanner(find_keyboard(), client)
+else:
+    while True:
+        input_text = input("Enter barcode to simulate scan (or 'exit' to quit): ")
+        if input_text.lower() == 'exit':
+            break
+        send_payload(input_text, client)
