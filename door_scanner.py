@@ -68,8 +68,9 @@ client.connect(MQTT_BROKER, MQTT_PORT, 60)
 client.subscribe(MQTT_TOPIC_UNLOCK)
 client.loop_start()
 
+input_device = find_keyboard()
 if not DEV_MODE:
-    read_scanner(find_keyboard(), client)
+    read_scanner(input_device, client)
 else:
     while True:
         input_text = input("Enter barcode to simulate scan (or 'exit' to quit): ")
