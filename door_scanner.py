@@ -30,9 +30,9 @@ def find_keyboard():
 def unlock_door():
     try:
         print("Unlocking door...")
-        subprocess.run(["hidrelay", "--on", "1"], check=True)
+        subprocess.run(["usbrelay"], check=True)
         time.sleep(3)
-        subprocess.run(["hidrelay", "--off", "1"], check=True)
+        subprocess.run(["usbrelay"], check=True)
     except Exception as e:
         print(f"Error unlocking door: {e}")
 
