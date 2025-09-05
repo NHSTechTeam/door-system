@@ -1,6 +1,6 @@
 dir="/opt/NHSTechTeam/door-system"
 
-apt update && apt install -y git python
+apt update && apt install -y git python3 python3-pip
 git clone https://github.com/NHSTechTeam/door-system.git $dir
 cd $dir
 pip install -r requirements.txt
