@@ -9,20 +9,19 @@ from dotenv import load_dotenv
 
 load_dotenv()
 MQTT_BROKER = os.getenv("MQTT_BROKER")
-MQTT_PORT =  os.getenv("MQTT_PORT", 1883)
+MQTT_PORT =  int(os.getenv("MQTT_PORT", 1883))
 MQTT_USERNAME = os.getenv("MQTT_USERNAME")
 MQTT_PASSWORD = os.getenv("MQTT_PASSWORD")
 MQTT_TOPIC_UNLOCK = "door/unlock"
 MQTT_TOPIC_SCAN = "door/scan"
-DEV_MODE = False
+DEV_MODE = os.getenv("DEV_MODE", "False").lower() in ("true", "1", "t")
 
 
 def find_keyboard():
     devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
     for dev in devices:
-        if "Barcode" in dev.name.lower() or "Keyboard" in dev.name.lower():
+        if "barcode" in dev.name.lower() or "keyboard" in dev.name.lower():
             return dev
-    DEV_MODE = True
     print("Keyboard not found, entering dev mode.")
     return None
 
@@ -53,7 +52,7 @@ def read_scanner(device, client):
                         input_text += code
         
 
-def send_payload(inputtext, client):
+def send_payload(input_text, client):
     payload = {"type": "barcode", "code": input_text}
     client.publish(MQTT_TOPIC_SCAN, json.dumps(payload))
 
@@ -68,8 +67,8 @@ client.connect(MQTT_BROKER, MQTT_PORT, 60)
 client.subscribe(MQTT_TOPIC_UNLOCK)
 client.loop_start()
 
-input_device = find_keyboard()
 if not DEV_MODE:
+    input_device = find_keyboard()
     read_scanner(input_device, client)
 else:
     while True:
