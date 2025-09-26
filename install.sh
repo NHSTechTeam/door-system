@@ -18,9 +18,12 @@ sudo systemctl daemon-reload
 sudo systemctl enable door-scanner.service
 sudo systemctl start door-scanner.service
 
-echo "Installation complete. Please edit the .env file with your configuration."
+
 
 if [ -d "/tmp/nhstt/.env" ]; then
-  sudo cp /tml/nhstt/.env $dir/.env
+  sudo cp /tmp/nhstt/.env $dir/.env
   sudo rm /tmp/nhstt/.env
+  echo "Reinstallation complete. Your previous .env file has been restored."
+else
+    echo "Installation complete. Please edit the .env file with your configuration."
 fi
