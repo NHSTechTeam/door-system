@@ -15,9 +15,12 @@ sudo chmod +x door_scanner.py
 cp .env.example .env
 
 sudo mv door-scanner.service /etc/systemd/system/door-scanner.service
+sudo mv door-gui.service /etc/systemd/system/door-gui.service
 sudo systemctl daemon-reload
-sudo systemctl enable door-scanner.service
-sudo systemctl start door-scanner.service
+sudo systemctl enable door-scanner
+sudo systemctl enable door-gui
+sudo systemctl start door-scanner
+sudo systemctl start door-gui
 
 
 

@@ -5,7 +5,7 @@ StartLimitIntervalSec=0
 
 [Service]
 Type=simple
-ExecStart=/opt/NHSTechTeam/door-system/door_scanner.py
+ExecStart=/opt/NHSTechTeam/door-system/door-scanner.py
 WorkingDirectory=/opt/NHSTechTeam/door-system
 Restart=always
 RestartSec=2

@@ -20,9 +20,12 @@ DEV_MODE = os.getenv("DEV_MODE", "False").lower() in ("true", "1", "t")
 def find_keyboard():
     devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
     for dev in devices:
+        print(dev)
         if "barcode" in dev.name.lower() or "keyboard" in dev.name.lower():
+            print(dev)
             return dev
     print("Keyboard not found, entering dev mode.")
+    DEV_MODE = True
     return None
 
 

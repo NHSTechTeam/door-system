@@ -1,0 +1,1 @@
+chromium --kiosk http://door.techteam.local/kiosk
