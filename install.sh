@@ -2,6 +2,7 @@ dir="/opt/NHSTechTeam/door-system"
 
 if [ -d "$dir" ]; then
   echo "Directory already exists. Copying .env and re installing."
+  sudo mkdir -p /tmp/nhstt
   sudo cp $dir/.env /tmp/nhstt/.env
   sudo rm -rf $dir
 fi
