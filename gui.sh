@@ -1,1 +1,1 @@
-chromium --kiosk http://door.techteam.local/kiosk
+firefox -kiosk http://door.techteam.local/kiosk

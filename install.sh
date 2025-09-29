@@ -12,7 +12,7 @@ if [ -d "$dir" ]; then
 fi
 
 echo " --> Installing libraries and dependencies..."
-sudo apt update && apt install -y git python3 python3-pip usbrelay xinit openbox chromium-browser
+sudo apt update && apt install -y git python3 python3-pip usbrelay xinit openbox firefox
 git clone https://github.com/NHSTechTeam/door-system.git $dir
 cd $dir
 pip install -r requirements.txt --break-system-packages

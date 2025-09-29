@@ -9,7 +9,7 @@ ExecStart=/opt/NHSTechTeam/door-system/door-scanner.py
 WorkingDirectory=/opt/NHSTechTeam/door-system
 Restart=always
 RestartSec=2
-User=techteam
+User=root
 Environment="PYTHONUNBUFFERED=1"
 
 [Install]
