@@ -1,7 +1,7 @@
 dir="/opt/NHSTechTeam/door-system"
 tmpdir="/tmp/nhstt"
 
-echo "-- NHS Tech Team Door System Installer --"
+echo " -- NHS Tech Team Door System Installer --"
 
 #move env if it exists
 if [ -d "$dir" ]; then
@@ -31,6 +31,7 @@ sudo systemctl start door-gui
 
 #auto login user on boot
 echo " --> Setting up auto login on tty1"
+sudo mkdir -p /etc/systemd/system/getty@tty1.service.d
 sudo tee /etc/systemd/system/getty@tty1.service.d/override.conf > /dev/null <<EOF
 [Service]
 ExecStart=
@@ -39,11 +40,11 @@ EOF
 
 #auto start gui on boot
 echo " --> Creating the autostart file"
-sudo cp .bash_profile ~/.bash_profile
+sudo cp $dir/.bash_profile ~/.bash_profile
 
 
 #restore .env if it was present
-if [ -d "$tmpdir/.env" ]; then
+if [ -f "$tmpdir/.env" ]; then
   sudo cp $tmpdir/.env $dir/.env
   sudo rm $tmpdir/.env
   echo " --> Reinstallation complete. Your previous .env file has been restored."
