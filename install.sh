@@ -1,9 +1,11 @@
 dir="/opt/NHSTechTeam/door-system"
+tmpdir="/tmp/nhstt"
 
+#move env if it exists
 if [ -d "$dir" ]; then
   echo "Directory already exists. Copying .env and re installing."
-  sudo mkdir -p /tmp/nhstt
-  sudo cp $dir/.env /tmp/nhstt/.env
+  sudo mkdir -p $tmpdir
+  sudo cp $dir/.env $tmpdir/.env
   sudo rm -rf $dir
 fi
 
@@ -23,10 +25,21 @@ sudo systemctl start door-scanner
 sudo systemctl start door-gui
 
 
+#auto login user on boot
+sudo tee /etc/systemd/system/getty@tty1.service.d/override.conf > /dev/null <<EOF
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin ${logname} --noclear %I \$TERM
+EOF
 
-if [ -d "/tmp/nhstt/.env" ]; then
-  sudo cp /tmp/nhstt/.env $dir/.env
-  sudo rm /tmp/nhstt/.env
+#auto start gui on boot
+sudo cp .bash_profile ~/.bash_profile
+
+
+#restore .env if it was present
+if [ -d "$tmpdir/.env" ]; then
+  sudo cp $tmpdir/.env $dir/.env
+  sudo rm $tmpdir/.env
   echo "Reinstallation complete. Your previous .env file has been restored."
 else
     echo "Installation complete. Please edit the .env file with your configuration."
