@@ -40,7 +40,7 @@ EOF
 
 #auto start gui on boot
 echo " --> Creating the autostart file"
-sudo cp $dir/.bash_profile ~/.bash_profile
+sudo cp $dir/.bash_profile /home/$(logname)/.bash_profile
 
 
 #restore .env if it was present
