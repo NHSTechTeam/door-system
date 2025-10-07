@@ -36,8 +36,9 @@ ExecStart=-/sbin/agetty --autologin $(logname) --noclear %I \$TERM
 EOF
 
 #auto start gui on boot
-echo " --> Creating the autostart file"
+echo " --> Creating the autostart file and setting up xinit and openbox"
 sudo cp $dir/.bash_profile /home/$(logname)/.bash_profile
+sudo cp $dir/.xinitrc /home/$(logname)/.xinitrc
 
 
 #restore .env if it was present
