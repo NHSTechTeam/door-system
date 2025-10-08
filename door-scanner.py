@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import paho.mqtt.client as mqtt
-#import evdev
+import evdev
 import time
 import subprocess
 import json
@@ -43,9 +43,9 @@ def unlock_door():
     try:
         cmd = RELAY_NAME+"="
         print("Unlocking door...")
-        subprocess.run(["usbrelay", cmd+"0"], check=True)
-        time.sleep(3)
         subprocess.run(["usbrelay", cmd+"1"], check=True)
+        time.sleep(5)
+        subprocess.run(["usbrelay", cmd+"0"], check=True)
     except Exception as e:
         print(f"Error unlocking door: {e}")
 
